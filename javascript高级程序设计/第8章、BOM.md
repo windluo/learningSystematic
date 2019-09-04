@@ -61,3 +61,156 @@ window.moveBy(0, 100);
 
 #### 8.1.4 窗口大小
 
+获取浏览器窗口本身的尺寸
+
+```js
+window.outerWidth;
+window.outerHeight;
+```
+
+获取浏览器视图区（viewport）大小
+
+```js
+// 标准模式
+window.innerWidth;
+window.innerHeight;
+
+// 混杂模式
+document.documentElement.clientWidth;
+document.documentElement.clientHeight;
+```
+
+改变窗口大小
+
+```js
+// 调整到100*100
+window.resizeTo(100, 100);
+// 调整到200*150
+window.resizeBy(100, 50);
+```
+
+**注意：** 上面这两个方法可能会被浏览器禁用，同时，这两个方法只能对最外层的 window 对象使用。
+
+#### 8.1.5 导航和打开窗口
+
+通过 window.open() 方法可以打开新窗口
+
+```js
+let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeatures]);
+```
+参数
+
+> **WindowObjectReference**，打开的新窗口对象的引用。如果调用失败，返回值会是 null 。如果父子窗口满足“同源策略”，可以通过这个引用访问新窗口的属性或方法。
+>
+> **strUrl**，新窗口需要载入的url地址。strUrl可以是web上的html页面也可以是图片文件或者其他任何浏览器支持的文件格式。
+>
+> **strWindowName**，新窗口的名称。该字符串可以用来作为超链接 `<a>` 或表单 `<form>` 元素的目标属性值。字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
+>
+> > 如有存在一个同名的窗口，则新开的窗口会加载到同名窗口。窗口名可以是特殊的名称：`_self`、`_top`、`_parent`、`_top`、`_blank`
+>
+> **strWindowFeatures**，可选参数。是一个字符串值，这个值列出了将要打开的窗口的一些特性(窗口功能和工具栏) 。 字符串中不能包含任何空白字符，特性之间用逗号分隔开。
+>
+> > 该参数包含的特性有：`width`、`height`、`resizable`等等。
+> >
+> > [具体参考](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/open#Position and size features)
+
+`open()` 方法，创建一个新的浏览器窗口对象，如同使用文件菜单中的新窗口命令一样。strUrl参数指定了该窗口将会打开的地址。如果strUrl 是一个空值，那么打开的窗口将会是带有默认工具栏的空白窗口（加载`about:blank`）。
+
+关闭窗口
+
+```js
+WindowObjectReference.close();
+WindowObjectReference.closed; // true
+```
+
+窗口被关闭后，`WindowObjectReference` 引用还存在，但是除了用来检测窗口是否被关闭，已经没什么用了。
+
+#### 8.1.6 间歇调用和超时调用
+
+JavaScript 是单线程语言，但可以通过 `setInterval()` 和 `setTimeout()` 进行间歇调用和超时调用。
+
+```js
+var intervalTimer = setInterval(function(){console.log(1)}, 1000); // 1秒执行一次
+clearInterval(intervalTimer); // 终止 setInterval() 定时器
+
+var timeoutTimer = setTimeout(function(){console.log(1)}, 1000); // 1秒后执行，执行完就结束定时器
+clearTimeout(timeoutTimer); // 提前终止 setTimeout() 定时器
+```
+
+#### 8.1.7 系统对话框
+
+浏览器提供了三种对话框：`alert()`、`confirm()`、`prompt()`。
+
+不过现代前端的发展，层出不穷的自定义对话框，系统提供的这三种对话框基本只能在`demo`里出现了。
+
+
+
+### 8.2 location 对象
+
+location 是最有用的 BOM 对象之一，既是 window 对象的属性，也是 document 对象的属性。
+
+location 的属性有很多，在兼容性上，有些新增的属性还是不太友好。
+
+#### 属性
+
+[`Location.href`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/href)
+
+包含整个URL的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)
+
+[`Location.protocol`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/protocol)
+
+包含URL对应协议的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，最后有一个":"。
+
+[`Location.host`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/host)
+
+包含了域名的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，可能在该串最后带有一个":"并跟上URL的端口号。
+
+[`Location.hostname`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/hostname)
+
+包含URL域名的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)。
+
+[`Location.port`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/port)
+
+包含端口号的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)。
+
+[`Location.pathname`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/pathname)
+
+包含URL中路径部分的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，开头有一个“`/"。`
+
+[`Location.search`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/search)
+
+ 包含URL参数的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，开头有一个`“?”`。
+
+[`Location.hash`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/hash)
+
+包含块标识符的[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，开头有一个`“#”。`
+
+[`Location.username`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/username)
+
+包含URL中域名前的用户名的一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)。
+
+[`Location.password`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/password)
+
+包含URL域名前的密码的一个 [`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)。
+
+[`Location.origin`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/origin) 只读
+
+包含页面来源的域名的标准形式[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)。
+
+#### 方法
+
+[`Location.assign()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/assign)
+
+加载给定URL的内容资源到这个Location对象所关联的对象上。
+
+[`Location.reload()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload)
+
+重新加载来自当前 URL的资源。他有一个特殊的可选参数，类型为 [`Boolean`](https://developer.mozilla.org/zh-CN/docs/Web/API/Boolean)，该参数为true时会导致该方法引发的刷新一定会从服务器上加载数据。如果是 `false`或没有制定这个参数，浏览器可能从缓存当中加载页面。
+
+[`Location.replace()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/replace)
+
+用给定的URL替换掉当前的资源。与 `assign()` 方法不同的是用 `replace()`替换的新页面不会被保存在会话的历史 [`History`](https://developer.mozilla.org/zh-CN/docs/Web/API/History)中，这意味着用户将不能用后退按钮转到该页面。
+
+[`Location.toString()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/toString)
+
+返回一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，包含整个URL。 它和读取[`URLUtils.href`](https://developer.mozilla.org/zh-CN/docs/Web/API/URLUtils/href)的效果相同。但是用它是不能够修改Location的值的。
