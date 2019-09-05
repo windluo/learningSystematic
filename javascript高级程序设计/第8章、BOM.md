@@ -214,3 +214,55 @@ location 的属性有很多，在兼容性上，有些新增的属性还是不�
 [`Location.toString()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/toString)
 
 返回一个[`DOMString`](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)，包含整个URL。 它和读取[`URLUtils.href`](https://developer.mozilla.org/zh-CN/docs/Web/API/URLUtils/href)的效果相同。但是用它是不能够修改Location的值的。
+
+
+
+### 8.3 navigator 对象
+
+navigator 对象是用于检测客户端浏览器的事实标准，所有浏览器都支持，当然属性上会有些差异。
+
+常见的是用 `navigator.userAgent` 检测浏览器版本和类型
+
+```js
+// 检测浏览器版本和类型
+navigator.userAgent
+
+// 检测插件
+navigator.plugins
+```
+
+
+
+### 8.4 screen 对象
+
+screen 对象只用来表明客户端的能力，其中包括浏览器窗口外部的显示器的信息。这个对象在实际编程中用处不大。
+
+
+
+### 8.5 history 对象
+
+history 对象保存着用户上网的历史记录，从窗口打开的那一刻算起。
+
+不同的窗口、标签、框架都有不同的 history。
+
+```js
+// 后退一页
+history.go(-1);
+// 前进一页
+history.go(1);
+// 前进两页
+history.go(2);
+// 跳转到百度，如果窗口的历史记录中没有该链接，则无法跳转
+history.go('baidu.com');
+// 后退一页
+history.back();
+// 前进一页
+history.forward();
+```
+
+
+
+### 小结
+
+BOM 最常用对象 window 和 location
+
