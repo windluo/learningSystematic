@@ -259,3 +259,32 @@ CDATASection 类型只针对 XML 文档，表示的是 CDATA 区域。该类型�
 
 这个类似是元素 Element 的特性，其 nodeType 为2。存在与元素的 attributes 属性。具体的在 Element 类型讲到了。
 
+### 10.2 DOM 操作技术
+
+这一章节重点提到了怎么操作 table，提到了表格的个属性和方法。
+
+搜MDN的时候，看到了一个有意思的 console
+
+```js
+
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+var john = new Person("John", "Smith");
+var jane = new Person("Jane", "Doe");
+var emily = new Person("Emily", "Jones");
+
+console.table([john, jane, emily]);
+```
+
+`console.table` 可以在控制台将数据以表格的形式打印出来。IE 不支持这个方法。
+
+
+
+### 总结
+
+- DOM 是语言中立的 API
+- DOM 由各种节点组成，最基本的节点类型是 Node
+- DOM 操作是 JS 中开销最大的、最损耗性能的。所以才会出现 JQuery、React、Vue等等。
