@@ -288,3 +288,5 @@ console.table([john, jane, emily]);
 - DOM 是语言中立的 API
 - DOM 由各种节点组成，最基本的节点类型是 Node
 - DOM 操作是 JS 中开销最大的、最损耗性能的。所以才会出现 JQuery、React、Vue等等。
+
+这一章讲的很基础，主要讲到了 DOM 的基本类型，怎么操作各种基本类型。
