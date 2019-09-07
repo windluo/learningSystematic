@@ -104,6 +104,12 @@ someNode.nodeValue; // 元素节点的 nodeValue 始终是空的
 
 #### 10.1.2 Document 类型
 
+nodeType为0;
+
+nodeName为"#document";
+
+nodeValue、parentNode、ownerDocument都为null。
+
 JS 通过 Document 类型表示文档。
 
 可以通过 `document.documentElement` 或 `document.childNodes[0]`快速访问根节点 <html> 元素。
@@ -116,5 +122,140 @@ JS 通过 Document 类型表示文档。
 
 #### 10.1.3 Element 类型
 
+Element 节点具有以下特点：
 
+- nodeType 为1
+- nodeName 的值为元素的标签名
+- nodeValue 为 null
+- parentNode 可能是 Document 或 Element
+
+访问元素的标签名，可以用 nodeName 属性，也可以用 tagName 属性。在 HTML 文档中，标签名始终是大写的。
+
+```js
+element.tagName.toLowerCase() == "div"; // 这样比较才能得出正确结果，或者把右边的字符串转为大写
+```
+
+最常见的元素比如 `html`、`div`、`ul`等，他们都有以下标准特性：
+
+- id，元素在文档中的唯一标识
+- title，有关元素的附加说明信息，一般通过浏览器默认的提示条展示。
+- className，与元素的 class 特性对应，非唯一标识。
+
+这些标准特性都可以获取或修改
+
+```js
+var $ele = document.getElementById('test');
+// 获取
+alert($ele.id);
+alert($ele.title);
+alert($ele.className);
+// 修改
+$ele.id = 'test1';
+$ele.title = '哈哈哈';
+$ele.className = 'div1';
+```
+
+对 id 的修改，如果没有关联样式，不会立即反应到页面上；对 title 的修改需要鼠标移动到元素上才会反应；对 className的修改会立即反应到页面上。
+
+所有 HTML 元素都是由 HTMLElment 或者其更具体的子类型表示的，比如 `DIV` 更具体的子类型为 `HTMLDivElement`。
+
+可以通过 `getAttribute(prop)` 方法获取具体的属性值
+
+```js
+$ele.getAttribute('id'); // test
+```
+
+特性的名称不区分大小写，也可以获取自定义的特性。
+
+可以通过`setAttribute(prop, value)`方法设置特性
+
+```js
+$ele.setAttribute('id', 'test2');
+```
+
+可以通过`removeAttribute(prop)`方法删除特性
+
+```js
+$ele.removeAttribute('class'); // 整个 class 特性被删除
+```
+
+##### attributes 属性
+
+Element 类型是使用 attributes 属性的唯一节点类型。
+
+attributes 属性包含一个 NameNodeMap，与 NodeList 类似，是一个“动态”集合。NameNodeMap 对象拥有下列方法：
+
+- getNamedItem(name)，返回 nodeName 属性等于 name 的节点
+- removeNamedItem(name)，从列表中移除 nodeName 为 name 的节点
+- setNamedItem(node)，向列表中添加节点，以节点的 nodeName 属性为索引
+- item(pos)，返回位于数字 pos 位置处的节点
+
+```js
+$ele.attributes.getNamedItem('id').nodeValue; // 获取节点值，等价于 $ele.getAttribute('id'); 
+```
+
+attributes 的NameNodeMap 对象拥有的这几个方法在使用上不如 `getAttribute()`这几个方法便捷，attributes 最佳的用途是拿来**遍历元素的特性**。
+
+使用`document.createElement()`可以创建元素，这个方法用处很大，现在最流行的几大框架在实现虚拟 DOM 时，都用到了这个方法：
+
+```js
+let element = document.createElement(tagName[, options]);
+```
+
+#### 10.1.4 Text 类型
+
+文本节点由 Text 类型表示，是纯文本。纯文本可以包含转义后的 HTML 字符，但不能保护 HTML 代码。
+
+Text 节点有以下特征：
+
+- nodeType 为3
+- nodeName 为"#text"
+- nodeValue 为节点所包含的文本
+- parentNode 是一个 Element
+- 没有子节点
+
+可以通过 nodeValue 属性或 data 属性访问 Text 节点中包含的文本，这两个属性包含的内容一样。
+
+原生提供的几种方法有些繁琐，其实对文本节点的操作可以用下面的更快捷
+
+```js
+$ele.text; // 获取文本
+$ele.text = '123'; // 修改或赋值文本
+```
+
+对于文本的切割之类，可以在拿到文本后，用`split()`等方法操作。
+
+#### 10.1.5	Comment 类型
+
+Comment 即注释，有以下特征：
+
+- nodeType 为8
+- nodeName 为"#comment"
+- nodeValue 是注释的内容
+- parentNode 可能是 Document 或 Element
+- 没有子节点
+
+Comment 类型与 Text 类型继承自相同的基类，所以他们通用除 `splitText()`之外的所有方法，都通过 nodeValue 属性或 data 属性访问内容。
+
+#### 10.1.6 CDATASection 类型
+
+CDATASection 类型只针对 XML 文档，表示的是 CDATA 区域。该类型也继承自 Text 类型，基本与 Text、Comment一样。
+
+其 nodeType 为4。
+
+#### 10.1.7 DocumentType 类型
+
+这个类型是拿 doctype 有关的信息，其 nodeType 为 10。
+
+在 HTML5 时代，这个类型基本不会在 JS 中操作。
+
+#### 10.1.8 DocumentFragment 类型
+
+这个类型是一种“轻量级”的文档，可以包含和控制节点，但不会像完整的文档那样占用额外的资源。
+
+其 nodeType 为11。
+
+#### 10.1.9 Attr 类型
+
+这个类似是元素 Element 的特性，其 nodeType 为2。存在与元素的 attributes 属性。具体的在 Element 类型讲到了。
 
