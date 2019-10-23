@@ -26,8 +26,49 @@ Node.js 的模块分为两大类：核心模块和文件模块。
 
 ### 控制流
 
+ 基于异步 I/O 的事件式编程容易将程序的逻辑拆得七零八落，给控制流的疏理制造障 碍。 
 
+#### 循环的陷阱
 
-Node.js 应用部署
+这个是异步机制导致的问题，主要体现在 `for...`循环：
 
-Node.js 的不足之处
+```js
+var fs = require('fs');
+var files = ['a.txt', 'b.txt', 'c.txt'];
+for (var i = 0; i < files.length; i++) {
+ 	fs.readFile(files[i], 'utf-8', function(err, contents) {
+ 	console.log(files[i] + ': ' + contents);
+ })
+```
+
+因为异步的原因，导致最后回调函数里的`files[i]`里的`i`其实取得是最后一次`i++`，所有的`files[i]`都会打印`undefined`，文件内容可以获取到。
+
+这里可以采用匿名函数处理，最佳方案推荐使用`forEach`，利用它的匿名函数结合循环：
+
+```js
+var fs = require('fs');
+var files = ['a.txt', 'b.txt', 'c.txt'];
+files.forEach(function(filename) {
+ 	fs.readFile(filename, 'utf-8', function(err, contents) {
+ 	console.log(filename + ': ' + contents);
+  });
+}); 
+```
+
+#### 解决控制流难题
+
+ Node.js 异步式编程还有一个显著的问题，即深层的回调函数嵌套。 在这种情况下，我们很难像看基本控制流结构一样一眼看清回调函数之间的关系，因此当程序规模扩大时必须采取手段降低耦合度，以实现更加优美、可读的代码。 
+
+一般的解决方案会引入一些模块：` async `、` streamlinejs `等。
+
+### Node.js 应用部署
+
+本书上提到一些不足之处现在都有了对应的解决方案。最常用的是利用`pm2`部署Node.js，它可以自动重启、还可以开多线程。
+
+### Node.js 不适合做什么
+
+- 计算密集型的程序 
+- 单用户多任务型应用 
+- 逻辑十分复杂的事务 
+- Unicode 与国际化 
+
