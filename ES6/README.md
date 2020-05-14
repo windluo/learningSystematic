@@ -1,0 +1,1 @@
+参考 [阮一峰的ES6篇学习](https://es6.ruanyifeng.com/)

@@ -32,5 +32,5 @@
 
 > 1、在 HTML 中，`<script>` 标签必须用 `</script>` 标签闭合
 >
-> 2、`<script>` 标签已 src 属性引入 JavaScript 时，标签内不能再有 js脚本，不会被执行
+> 2、`<script>` 标签以 src 属性引入 JavaScript 时，标签内不能再有 js脚本，不会被执行
 
